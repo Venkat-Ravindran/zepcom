@@ -1,0 +1,9 @@
+
+Ü
+java:S6548"˜A Singleton implementation was detected. Make sure the use of the Singleton pattern is required and the implementation is the right one for the context.(øø¤Ÿ8úýïâ›2J$ca9a44c5-5cf7-44a8-9c06-623e337cffaa
+|
+java:S1144%"4Remove this unused private "initRetroFitApi" method.(´•úÜûÿÿÿÿ8üýïâ›2J$d5261bd3-e0a9-47d7-80c9-9a4e971dde25
+~
+java:S2696"6Make the enclosing method "static" or remove this set.(û€Ì›ùÿÿÿÿ8›þïâ›2J$01903712-47b0-4d22-80da-243cd94739ec
+o
+java:S10680",Remove this unused "retrofit" private field.(ƒ¼Žò8¥þïâ›2J$1f91a04a-7e95-4656-b4e0-1aa0bc2105b8

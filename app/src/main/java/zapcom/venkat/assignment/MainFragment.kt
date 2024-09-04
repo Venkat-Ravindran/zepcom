@@ -1,0 +1,130 @@
+package zapcom.venkat.assignment
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import factory.ResponseViewModelFactory
+import repository.JSONRepositoryImpl
+import viewmodel.JSONViewModel
+
+
+class MainFragment : Fragment() {
+
+    lateinit var horizontalScrollView: RecyclerView
+    lateinit var banner: LinearLayout
+    lateinit var splitBanner: LinearLayout
+
+    private var mAccountViewModel: JSONViewModel? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        var view = inflater.inflate(R.layout.fragment_main, container, false)
+        initUIComponents(view)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val ImgUrl = ArrayList<String>()
+        ImgUrl.add("https://images.pexels.com/photos/277390/pexels-photo-277390.jpeg");
+        ImgUrl.add("https://images.pexels.com/photos/343720/pexels-photo-343720.jpeg");
+        ImgUrl.add("https://images.pexels.com/photos/984619/pexels-photo-984619.jpeg");
+        ImgUrl.add("https://images.pexels.com/photos/7974/pexels-photo.jpg");
+
+        mAccountViewModel = ResponseViewModelFactory(JSONRepositoryImpl(App.getApi())).create()
+
+        with(mAccountViewModel) {
+            handleObserverForLoading(view, this)
+            handleObserverForNoHistory(this)
+            handleObserverForHistoryList(this)
+            handleObserverForError(view, this)
+        }
+
+        mAccountViewModel?.fetchJSONHistoryList()
+
+        val adapter = Adapter(ImgUrl, this@MainFragment)
+        horizontalScrollView.setAdapter(adapter)
+        horizontalScrollView.setLayoutManager(LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, true))
+        adapter.notifyDataSetChanged()
+    }
+
+    fun initUIComponents(view: View){
+        horizontalScrollView = view.findViewById(R.id.horizontalFreeScroll)
+        banner = view.findViewById(R.id.banner)
+        splitBanner = view.findViewById(R.id.splitBanner)
+    }
+
+    private fun handleObserverForLoading(
+        view: View?,
+        jsonHistoryViewModel: JSONViewModel?
+    ) {
+        jsonHistoryViewModel?.isShowLoading?.observe(viewLifecycleOwner) { isShown ->
+        }
+    }
+
+    private fun handleObserverForNoHistory(viewModel: JSONViewModel?) {
+        viewModel?.hasNoJSONHistory?.observe(viewLifecycleOwner) { bool ->
+            if (bool) {
+                Toast.makeText(requireContext(), "Empty", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "NOT Empty", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun handleObserverForHistoryList(viewModel: JSONViewModel?) {
+        viewModel?.getJSONHistoryList?.observe(viewLifecycleOwner) { jsonValue ->
+            val map: Map<String, List<Any>> =
+                Gson().fromJson(jsonValue, object : TypeToken<Map<String, List<Any>>>() {}.type)
+            //TODO: Handle the response here
+        }
+    }
+
+    private fun handleObserverForError(view: View?, viewModel: JSONViewModel?) {
+        viewModel?.getErrorMessage?.observe(viewLifecycleOwner) {
+        }
+    }
+}
+
+class Adapter(var urls: ArrayList<String>, var context: MainFragment) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val image: ImageView = v.findViewById(R.id.horizontalImg)
+        val name: TextView = v.findViewById(R.id.horizontalText)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.horizontal_list_item, parent, false)
+//        v.layoutParams = RecyclerView.LayoutParams(1080, 800)
+        return ViewHolder(v)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Glide.with(this.context)
+            .load(urls[position])
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(holder.image)
+    }
+
+    override fun getItemCount(): Int {
+        return urls.size
+    }
+}
