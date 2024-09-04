@@ -19,7 +19,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class NetworkModule(private val baseUrl: String) {
+class NetworkModule() {
     var gson = GsonBuilder()
         .setLenient()
         .create()
@@ -30,7 +30,7 @@ class NetworkModule(private val baseUrl: String) {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl(baseUrl)
+            .baseUrl("https://www.jsonkeeper.com/b/5BEJ/")
             .build()
     }
 

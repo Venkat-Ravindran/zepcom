@@ -1,9 +1,9 @@
 
 Ü
-java:S6548"˜A Singleton implementation was detected. Make sure the use of the Singleton pattern is required and the implementation is the right one for the context.(øø¤Ÿ8úıïâ›2J$ca9a44c5-5cf7-44a8-9c06-623e337cffaa
+java:S6548"˜A Singleton implementation was detected. Make sure the use of the Singleton pattern is required and the implementation is the right one for the context.(øø¤Ÿ8úıïâ›2J$7e589667-d4aa-4e4b-a946-69c742c832ba
 |
-java:S1144%"4Remove this unused private "initRetroFitApi" method.(´•úÜûÿÿÿÿ8üıïâ›2J$d5261bd3-e0a9-47d7-80c9-9a4e971dde25
+java:S1144%"4Remove this unused private "initRetroFitApi" method.(´•úÜûÿÿÿÿ8üıïâ›2J$17da9ded-ebc1-4c88-b2d3-e1421cd9d6fa
 ~
-java:S2696"6Make the enclosing method "static" or remove this set.(û€Ì›ùÿÿÿÿ8›şïâ›2J$01903712-47b0-4d22-80da-243cd94739ec
+java:S2696"6Make the enclosing method "static" or remove this set.(û€Ì›ùÿÿÿÿ8›şïâ›2J$82d2ba3d-f455-492a-8253-87d433d599a9
 o
-java:S10680",Remove this unused "retrofit" private field.(ƒ¼ò8¥şïâ›2J$1f91a04a-7e95-4656-b4e0-1aa0bc2105b8
+java:S10680",Remove this unused "retrofit" private field.(ƒ¼ò8¥şïâ›2J$48341eb8-36df-4305-bba9-903732feed9f

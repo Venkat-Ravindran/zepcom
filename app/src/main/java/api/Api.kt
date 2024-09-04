@@ -1,14 +1,14 @@
 package api
 
-import com.google.gson.JsonObject
-import io.reactivex.Observable
+import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonArray
 import retrofit2.http.GET
 
 /**
  * created by : chandan kumar
  */
 interface Api {
-    @GET()
-    fun fetchJSONInfo(): Observable<JsonObject>
+    @GET(".")
+    fun fetchJSONInfo(): MutableLiveData<JsonArray>
 
 }

@@ -9,12 +9,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.google.gson.JsonArray
 import factory.ResponseViewModelFactory
 import repository.JSONRepositoryImpl
 import viewmodel.JSONViewModel
@@ -37,6 +37,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var view = inflater.inflate(R.layout.fragment_main, container, false)
+        mAccountViewModel = ResponseViewModelFactory(JSONRepositoryImpl(App.getApi())).create()
         initUIComponents(view)
         return view
     }
@@ -49,21 +50,24 @@ class MainFragment : Fragment() {
         ImgUrl.add("https://images.pexels.com/photos/984619/pexels-photo-984619.jpeg");
         ImgUrl.add("https://images.pexels.com/photos/7974/pexels-photo.jpg");
 
-        mAccountViewModel = ResponseViewModelFactory(JSONRepositoryImpl(App.getApi())).create()
+        val jsonResp: MutableLiveData<JsonArray>? = mAccountViewModel?.fetchJSONHistoryList()
+        jsonResp?.observe(viewLifecycleOwner, Observer {
+            val jsonArrayResp: JsonArray = it
+            //TODO: Process this jsonArrayResp
+            println(jsonArrayResp)
+        })
+//        with(mAccountViewModel) {
+//            handleObserverForLoading(view, this)
+//            handleObserverForNoHistory(this)
+//            handleObserverForHistoryList(this)
+//            handleObserverForError(view, this)
+//        }
 
-        with(mAccountViewModel) {
-            handleObserverForLoading(view, this)
-            handleObserverForNoHistory(this)
-            handleObserverForHistoryList(this)
-            handleObserverForError(view, this)
-        }
 
-        mAccountViewModel?.fetchJSONHistoryList()
-
-        val adapter = Adapter(ImgUrl, this@MainFragment)
-        horizontalScrollView.setAdapter(adapter)
-        horizontalScrollView.setLayoutManager(LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, true))
-        adapter.notifyDataSetChanged()
+//        val adapter = Adapter(ImgUrl, this@MainFragment)
+//        horizontalScrollView.setAdapter(adapter)
+//        horizontalScrollView.setLayoutManager(LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, true))
+//        adapter.notifyDataSetChanged()
     }
 
     fun initUIComponents(view: View){
@@ -92,8 +96,9 @@ class MainFragment : Fragment() {
 
     private fun handleObserverForHistoryList(viewModel: JSONViewModel?) {
         viewModel?.getJSONHistoryList?.observe(viewLifecycleOwner) { jsonValue ->
-            val map: Map<String, List<Any>> =
-                Gson().fromJson(jsonValue, object : TypeToken<Map<String, List<Any>>>() {}.type)
+            println(jsonValue)
+//            val map: Map<String, List<Any>> =
+//                Gson().fromJson(jsonValue, object : TypeToken<Map<String, List<Any>>>() {}.type)
             //TODO: Handle the response here
         }
     }

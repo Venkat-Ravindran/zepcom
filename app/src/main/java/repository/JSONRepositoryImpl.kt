@@ -1,8 +1,8 @@
 package repository
 
+import androidx.lifecycle.MutableLiveData
 import api.Api
-import com.google.gson.JsonObject
-import io.reactivex.Observable
+import com.google.gson.JsonArray
 
 /**
  * create by chandan kumar on 5/13/2022.
@@ -10,7 +10,7 @@ import io.reactivex.Observable
 
 class JSONRepositoryImpl(private val api: Api) : IJSONRepository {
 
-    override fun getJSONHistory(): Observable<JsonObject> {
+    override fun getJSONHistory(): MutableLiveData<JsonArray> {
         return api.fetchJSONInfo()
     }
 }

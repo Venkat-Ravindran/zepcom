@@ -40,15 +40,11 @@ public class App extends MultiDexApplication {
 
     public static Api getApi() {
         if (mRetrofitApi == null) {
-            mRetrofitApi = new NetworkModule(BASE_URL).provideApi();
+            mRetrofitApi = new NetworkModule().provideApi();
         }
         return mRetrofitApi;
     }
 
     private static Retrofit retrofit;
 
-    private static final String BASE_URL = "https://www.jsonkeeper.com/b/5BEJ";
-    public String getURL(){
-        return BASE_URL;
-    }
 }
