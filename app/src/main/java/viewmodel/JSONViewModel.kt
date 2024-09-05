@@ -3,6 +3,8 @@ package viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonArray
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import repository.IJSONRepository
 import zapcom.venkat.assignment.BaseViewModel
 
@@ -21,21 +23,22 @@ class JSONViewModel(private var repository: IJSONRepository) : BaseViewModel() {
             return jsonHistoryList
         }
 
-    fun fetchJSONHistoryList(): MutableLiveData<JsonArray> {
-//        addDisposable(
-//            repository.getJSONHistory()
-//                .subscribeOn(Schedulers.io())
-//                .subscribe({
-//                    if (!it.isJsonArray) {
-//                        noJSONHistory.value = true
-//                    } else {
-//                        jsonHistoryList.value = it
-//                    }
-//                }, {
-//                    errorMessage.value = extractErrorMessage(it)
-//                })
-//        )
-        val jsonArray: MutableLiveData<JsonArray> = repository.getJSONHistory()
-        return jsonArray
+    fun fetchJSONHistoryList() {
+        addDisposable(
+            repository.getJSONHistory()
+                .subscribeOn(Schedulers.io())
+                .observeOn(
+                    AndroidSchedulers.mainThread()
+                )
+                .subscribe({
+                    if (!it.isJsonArray) {
+                        noJSONHistory.value = true
+                    } else {
+                        jsonHistoryList.value = it
+                    }
+                }, {
+                    errorMessage.value = extractErrorMessage(it)
+                })
+        )
     }
 }

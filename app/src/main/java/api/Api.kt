@@ -1,7 +1,7 @@
 package api
 
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonArray
+import io.reactivex.Observable
 import retrofit2.http.GET
 
 /**
@@ -9,6 +9,6 @@ import retrofit2.http.GET
  */
 interface Api {
     @GET(".")
-    fun fetchJSONInfo(): MutableLiveData<JsonArray>
+    fun fetchJSONInfo(): Observable<JsonArray>
 
 }
