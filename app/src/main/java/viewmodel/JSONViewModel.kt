@@ -37,7 +37,7 @@ class JSONViewModel(private var repository: IJSONRepository) : BaseViewModel() {
                         jsonHistoryList.value = it
                     }
                 }, {
-                    errorMessage.value = extractErrorMessage(it)
+                    errorMessage.value = "Some Error Happened"
                 })
         )
     }
